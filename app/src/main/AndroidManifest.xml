@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.zzy.redot">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.REDot">
+        <activity
+            android:name=".ui.design.FullscreenActivity"
+            android:label="@string/title_activity_fullscreen"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.REDot.NoActionBar.Fullscreen" />
+        <activity
+            android:name=".ui.design.TextSettingActivity" />
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+
+        <activity
+            android:name=".ui.home.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.REDot.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
