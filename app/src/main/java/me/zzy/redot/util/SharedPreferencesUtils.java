@@ -1,19 +1,26 @@
 package me.zzy.redot.util;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author ZZY
  * 12/20/20.
  * Singleton
+ * reference https://github.com/open-android/SharedPreferencesUtils
  */
 public class SharedPreferencesUtils {
+
+    private static SharedPreferences sharedPreferences;
+    private static SharedPreferences.Editor editor;
+    private static Context mContext;
 
     private static final SharedPreferencesUtils UTILS = new SharedPreferencesUtils();
 
@@ -24,15 +31,36 @@ public class SharedPreferencesUtils {
     private SharedPreferencesUtils() {
     }
 
+    public static SharedPreferencesUtils init(Context context) {
+        mContext = context;
+        return UTILS;
+    }
+
+    /**
+     * 承担了getInstance()的任务
+     */
+    public static SharedPreferencesUtils setSharedPreferences(@StringRes int key) {
+        return setSharedPreferences(mContext.getString(key));
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    public static SharedPreferencesUtils setSharedPreferences(String name) {
+        sharedPreferences = mContext.getSharedPreferences(name, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        return UTILS;
+    }
+
+    public void put(@StringRes int key, @NonNull Object value) {
+        put(mContext.getString(key), value);
+    }
+
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      *
-     * @param sp SharedPreferences
-     * @param key The name of the preference to modify.
+     * @param key   The name of the preference to modify.
      * @param value The new value for the preference.
      */
-    public void put(SharedPreferences sp, String key, @NonNull Object value) {
-        SharedPreferences.Editor editor = sp.edit();
+    public SharedPreferencesUtils put(String key, @NonNull Object value) {
 
         if (value instanceof String) {
             editor.putString(key, (String) value);
@@ -47,54 +75,56 @@ public class SharedPreferencesUtils {
         } else {
             editor.putString(key, value.toString());
         }
+        return this;
+    }
 
-        SharedPreferencesCompat.apply(editor);
+    public Object get(@StringRes int key, @NonNull Object defValue) {
+        return get(mContext.getString(key), defValue);
     }
 
     /**
      * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
      *
-     * @param key The name of the preference to retrieve.
+     * @param key      The name of the preference to retrieve.
      * @param defValue Value to return if this preference does not exist.
      * @return Returns the preference value if it exists, or defValue.  Throws
      * ClassCastException if there is a preference with this name that is not
      * a long.
      */
-    public Object get(SharedPreferences sp, String key, @NonNull Object defValue) {
-
+    public Object get(String key, @NonNull Object defValue) {
         if (defValue instanceof String) {
-            return sp.getString(key, (String) defValue);
+            return sharedPreferences.getString(key, (String) defValue);
         } else if (defValue instanceof Integer) {
-            return sp.getInt(key, (Integer) defValue);
+            return sharedPreferences.getInt(key, (Integer) defValue);
         } else if (defValue instanceof Boolean) {
-            return sp.getBoolean(key, (Boolean) defValue);
+            return sharedPreferences.getBoolean(key, (Boolean) defValue);
         } else if (defValue instanceof Float) {
-            return sp.getFloat(key, (Float) defValue);
+            return sharedPreferences.getFloat(key, (Float) defValue);
         } else if (defValue instanceof Long) {
-            return sp.getLong(key, (Long) defValue);
+            return sharedPreferences.getLong(key, (Long) defValue);
         }
-
         return null;
     }
 
-    /**
-     * 移除某个key值已经对应的值
-     *
-     * @param key The name of the preference to remove.
-     */
-    public void remove(SharedPreferences sp, String key) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove(key);
-        SharedPreferencesCompat.apply(editor);
+    public SharedPreferencesUtils putStringSet(@StringRes int key, @NonNull Set<String> value) {
+        return putStringSet(mContext.getString(key), value);
     }
 
-    /**
-     * 清除所有数据
-     */
-    public static void clear(SharedPreferences sp) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.clear();
-        SharedPreferencesCompat.apply(editor);
+    public SharedPreferencesUtils putStringSet(String key, @NonNull Set<String> value) {
+        editor.putStringSet(key, value);
+        return this;
+    }
+
+    public Set<String> getStringSet(String key, @NonNull Set<String> defValue) {
+        return sharedPreferences.getStringSet(key, defValue);
+    }
+
+    public Set<String> getStringSet(@StringRes int key, @NonNull Set<String> defValue) {
+        return getStringSet(mContext.getString(key), defValue);
+    }
+
+    public void finish() {
+        editor.apply();
     }
 
     /**
@@ -102,10 +132,14 @@ public class SharedPreferencesUtils {
      *
      * @param key The name of the preference to check.
      * @return Returns true if the preference exists in the preferences,
-     *         otherwise false.
+     * otherwise false.
      */
-    public boolean contains(SharedPreferences sp, String key) {
-        return sp.contains(key);
+    public boolean contains(String key) {
+        return sharedPreferences.contains(key);
+    }
+
+    public boolean contains(@StringRes int key) {
+        return contains(mContext.getString(key));
     }
 
     /**
@@ -114,54 +148,30 @@ public class SharedPreferencesUtils {
      * @return Returns a map containing a list of pairs key/value representing
      * the preferences.
      */
-    public Map<String, ?> getAll(SharedPreferences sp) {
-        return sp.getAll();
+    public Map<String, ?> getAll() {
+        return sharedPreferences.getAll();
+    }
+
+    public void remove(@StringRes int key) {
+        remove(mContext.getString(key));
     }
 
     /**
-     * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类
+     * 移除某个key值已经对应的值
+     *
+     * @param key The name of the preference to remove.
      */
-    private static class SharedPreferencesCompat {
-        private static final Method S_APPLY_METHOD = findApplyMethod();
+    public void remove(String key) {
+        editor.remove(key);
+        editor.apply();
+    }
 
-        /**
-         * 反射查找apply的方法
-         *
-         * @return the {@code Method} object that matches the specified
-         *         {@code name} and {@code parameterTypes}
-         */
-        @SuppressWarnings({"unchecked", "rawtypes"})
-        private static Method findApplyMethod() {
-            try {
-                Class clz = SharedPreferences.Editor.class;
-                return clz.getMethod("apply");
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        /**
-         * 如果找到则使用apply执行，否则使用commit
-         *
-         * @param editor SharedPreferences.Editor
-         */
-        public static void apply(SharedPreferences.Editor editor) {
-            try {
-                if (S_APPLY_METHOD != null) {
-                    S_APPLY_METHOD.invoke(editor);
-                    return;
-                }
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            editor.commit();
-        }
+    /**
+     * 清除所有数据
+     */
+    public void clear() {
+        editor.clear();
+        editor.apply();
     }
 }
 

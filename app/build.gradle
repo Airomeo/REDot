@@ -42,6 +42,4 @@ dependencies {
     implementation 'me.jessyan:autosize:1.2.1'
 //    ScrollTextView
     implementation 'anylife.scrolltextview:ScrollTextviewLib:1.5.0'
-
-    implementation "androidx.preference:preference:1.1.1"
 }
