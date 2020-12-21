@@ -1,10 +1,6 @@
 package me.zzy.redot.ui.design;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import anylife.scrolltextview.ScrollTextView;
 import me.zzy.redot.R;
@@ -85,6 +83,7 @@ public class TextSettingActivity extends AppCompatActivity {
 //            intent.putExtra(TEXT_BG_COLOR_KEY, textBgColor);
 //            setResult(RESULT_OK, intent);
 
+//            TODO: 存配置信息到数据库，传数据到下一个activity
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
 
