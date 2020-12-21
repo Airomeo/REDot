@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <me.zzy.redot.ui.design.MyScrollTextView
+    <me.zzy.redot.ui.design.MScrollTextView
         android:id="@+id/myScrollTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

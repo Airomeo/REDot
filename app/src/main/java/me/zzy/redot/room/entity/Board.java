@@ -20,24 +20,24 @@ public class Board {
     public float textSize;
 
     @ColumnInfo(name = "text_color")
-    public String text_color;
+    public int text_color;
 
     @ColumnInfo(name = "background_color")
-    public String background_color;
+    public int background_color;
 
     @ColumnInfo(name = "speed")
-    public String speed;
+    public int speed;
 
     @ColumnInfo(name = "is_horizontal")
-    public String isHorizontal;
+    public boolean isHorizontal;
 
     @ColumnInfo(name = "clickable")
-    public String clickable;
+    public boolean clickable;
 
     @ColumnInfo(name = "is_scroll_forever")
-    public String is_scroll_forever;
+    public boolean is_scroll_forever;
 
     @ColumnInfo(name = "times")
-    public String times;
+    public int times;
 
 }

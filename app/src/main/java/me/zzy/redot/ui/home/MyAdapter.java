@@ -1,7 +1,6 @@
 package me.zzy.redot.ui.home;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,7 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import me.zzy.redot.R;
-import me.zzy.redot.ui.design.MyScrollTextView;
+import me.zzy.redot.ui.design.MScrollTextView;
 import me.zzy.redot.ui.design.TextSettingActivity;
 
 /**
@@ -29,7 +28,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView textView;
         public ImageView imageView;
         public CardView cardView;
-        private MyScrollTextView mScrollTextView;
+        private MScrollTextView mScrollTextView;
 
         public MyViewHolder(CardView v) {
             super(v);

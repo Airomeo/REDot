@@ -15,7 +15,7 @@ import me.zzy.redot.room.entity.Board;
  */
 @Database(entities = {Board.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract BoardDao boardDao();
+    public abstract BoardDao getBoardDao();
 
     private static AppDatabase INSTANCE;
 

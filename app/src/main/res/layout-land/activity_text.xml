@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <me.zzy.redot.ui.design.MyScrollTextView
+        <me.zzy.redot.ui.design.MScrollTextView
             android:id="@+id/scrollText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

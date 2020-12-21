@@ -1,8 +1,6 @@
 package me.zzy.redot.ui.design;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,13 +10,11 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff.Mode;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 
@@ -58,7 +54,7 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
     private String text = "";               // scroll text
     private float textSize = 20f;           // default text size
     private int textColor;
-    private int textBackColor=0x00000000;
+    private int textBackColor = 0xFF000000;
 
     private int needScrollTimes = Integer.MAX_VALUE;      //scroll times
 
@@ -202,7 +198,7 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
      *
      * @return textBackColor
      */
-    public int getBackgroundColor(){
+    public int getBackgroundColor() {
         return textBackColor;
     }
 
@@ -212,9 +208,9 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
      *
      * @param color textBackColor
      */
-    public void setScrollTextBackgroundColor(int color){
+    public void setScrollTextBackgroundColor(int color) {
         this.setBackgroundColor(color);
-        this.textBackColor=color;
+        this.textBackColor = color;
     }
 
 
@@ -239,10 +235,10 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
     /**
      * get text size
      *
-     * @return  px
+     * @return px
      */
     public float getTextSize() {
-        return px2sp(this.getContext(),textSize);
+        return px2sp(this.getContext(), textSize);
     }
 
 
@@ -282,7 +278,7 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
             throw new IllegalArgumentException("textSize must  < 900");
         } else {
 
-            this.textSize=sp2px(getContext(), textSizeTem);
+            this.textSize = sp2px(getContext(), textSizeTem);
             //重新设置Size
             paint.setTextSize(textSize);
             //试图区域也要改变
@@ -293,7 +289,8 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
             android.view.ViewGroup.LayoutParams lp = this.getLayoutParams();
             lp.width = viewWidth;
             lp.height = dip2px(this.getContext(), mHeight);
-            this.setLayoutParams(lp);
+            //TODO: 背景视图大小适当更改
+//            this.setLayoutParams(lp);
 
             isSetNewText = true;
         }
@@ -324,7 +321,7 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
     }
 
 
-    public  int px2sp(Context context, float pxValue) {
+    public int px2sp(Context context, float pxValue) {
         float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
@@ -400,6 +397,15 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (clickEnable) {
+            return super.dispatchTouchEvent(event);
+        } else {
+            return false;
+        }
     }
 
 
@@ -500,7 +506,6 @@ public class MScrollTextView extends SurfaceView implements SurfaceHolder.Callba
 
     /**
      * Scroll thread
-     *
      */
     class ScrollTextThread implements Runnable {
         @Override

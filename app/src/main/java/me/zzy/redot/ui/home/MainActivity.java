@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String[] myDataset = {"aaa", "bbb", "ccc", "ddd"};
+    private String[] myDataset = {"aaa", "bbb", "ccc"};
     private ActivityMainBinding b;
 
 

@@ -5,17 +5,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import anylife.scrolltextview.ScrollTextView;
+import me.zzy.redot.AppDatabase;
 import me.zzy.redot.R;
+import me.zzy.redot.databinding.ActivityTextBinding;
+import me.zzy.redot.room.dao.BoardDao;
+import me.zzy.redot.room.entity.Board;
 
 public class TextSettingActivity extends AppCompatActivity {
     public static final String TEXT_INPUT_KEY = "textInput";
@@ -26,23 +29,33 @@ public class TextSettingActivity extends AppCompatActivity {
 
     public static final int REQUEST_SETTING_CODE = 0001;
     private ImageButton checkBtn;
-    private ScrollTextView scrollTextView;
+    private MScrollTextView scrollTextView;
 
     private int textColor, textBgColor;
 
     private int scrollSpeed = 5;
     private float scrollSize = 20f;
     private EditText editText;
+    private BoardDao boardDao;
+    private ActivityTextBinding b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text);
-        scrollTextView = findViewById(R.id.scrollText);
+        b = ActivityTextBinding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
+        scrollTextView = b.scrollText;
+//        scrollTextView.setScrollTextBackgroundColor(0xff000000);
 //        hideBottomUIMenu();
-        scrollTextView.setZOrderOnTop(false);
-        checkBtn = findViewById(R.id.check);
-        editText = findViewById(R.id.text_input);
+//        scrollTextView.setZOrderOnTop(false);
+        checkBtn = b.check;
+        editText = b.textInput;
+
+        b.textColor.setCurrentColor(scrollTextView.getTextColor());
+        b.bgColor.setCurrentColor(scrollTextView.getBackgroundColor());
+//        b.text_color.setCurrentColor(((ColorDrawable) mTv_text_color_a.getBackground()).getColor());
+//        b.bg_color.setCurrentColor(((ColorDrawable) mTv_text_color_a.getBackground()).getColor());
+
 
 //        scrollTextView.setTextSize(getIntent().getFloatExtra(SCROLL_SIZE_KEY, scrollSize));
 //        scrollTextView.setSpeed(getIntent().getIntExtra(SCROLL_SPEED_KEY, scrollSpeed));
@@ -76,29 +89,29 @@ public class TextSettingActivity extends AppCompatActivity {
 
         checkBtn.setOnClickListener(v -> {
 //            Intent intent = new Intent();
-//            intent.putExtra(TEXT_INPUT_KEY, editText.getText().toString());
-//            intent.putExtra(SCROLL_SIZE_KEY, scrollTextView.getTextSize());
-//            intent.putExtra(SCROLL_SPEED_KEY, scrollSpeed);
-//            intent.putExtra(TEXT_COLOR_KEY, textColor);
-//            intent.putExtra(TEXT_BG_COLOR_KEY, textBgColor);
-//            setResult(RESULT_OK, intent);
 
 //            TODO: 存配置信息到数据库，传数据到下一个activity
+            //TODO: 重写scrollTextView
+            boardDao = AppDatabase.getInstance(null).getBoardDao();
+            Board board = new Board();
+            board.text = editText.getText().toString();
+            board.background_color = scrollTextView.getBackgroundColor();
+            board.text_color = scrollTextView.getTextColor();
+            board.textSize = scrollTextView.getTextSize();
+            board.clickable = scrollTextView.isClickable();
+            board.speed = scrollSpeed;
+//            board.is_scroll_forever = scrollTextView.isScrollForever;
+            board.isHorizontal = scrollTextView.isHorizontal;
+            boardDao.insertAll(board);
             Intent intent = new Intent(this, FullscreenActivity.class);
+
+            intent.putExtra(TEXT_INPUT_KEY, editText.getText().toString().equals("")?getString(R.string.input_text_hint):editText.getText().toString());
+            intent.putExtra(SCROLL_SIZE_KEY, scrollTextView.getTextSize());
+            intent.putExtra(SCROLL_SPEED_KEY, scrollSpeed);
+            intent.putExtra(TEXT_COLOR_KEY, scrollTextView.getTextColor());
+            intent.putExtra(TEXT_BG_COLOR_KEY, scrollTextView.getBackgroundColor());
             startActivity(intent);
 
-
-//            finish();
-        });
-
-        TextView textColorView = findViewById(R.id.text_color);
-        textColorView.setOnClickListener(v -> {
-//                selectColor(true);
-        });
-
-        TextView textBgView = findViewById(R.id.bg_color);
-        textBgView.setOnClickListener(v -> {
-//                selectColor(false);
         });
 
         SeekBar textSizeSeekBar = findViewById(R.id.text_size_seek_bar);
@@ -134,6 +147,18 @@ public class TextSettingActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+
+        b.textColor.setOnColorChangerListener(color -> {
+            Log.i("COLOR_INT", "颜色发生变化" + color);
+            scrollTextView.setTextColor(color);
+            textColor = color;
+        });
+        b.bgColor.setOnColorChangerListener(color -> {
+            Log.i("COLOR_INT", "颜色发生变化" + color);
+            textBgColor = color;
+            scrollTextView.setScrollTextBackgroundColor(color);
+        });
+
     }
 
     PopupWindow mPopWindow;

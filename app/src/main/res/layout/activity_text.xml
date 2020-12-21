@@ -12,32 +12,52 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <FrameLayout
-        android:id="@+id/view"
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="184dp"-->
+    <!--        android:layout_margin="@dimen/content_margin"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--        <me.zzy.redot.ui.design.MScrollTextView-->
+    <!--            android:id="@+id/scrollText"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="184dp"-->
+    <!--            android:singleLine="true"-->
+    <!--            app:clickEnable="true"-->
+    <!--            app:isHorizontal="true"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent"-->
+    <!--            app:speed="1"-->
+    <!--            app:text="@string/input_text_hint"-->
+    <!--            app:text_color="#ffffffff"-->
+    <!--            app:text_size="128sp"-->
+    <!--            app:times="666" />-->
+
+    <!--    </FrameLayout>-->
+
+
+    <me.zzy.redot.ui.design.MScrollTextView
+        android:id="@+id/scrollText"
         android:layout_width="match_parent"
         android:layout_height="184dp"
         android:layout_margin="@dimen/content_margin"
+        android:singleLine="true"
+        app:clickEnable="true"
+
+        app:isHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <me.zzy.redot.ui.design.MyScrollTextView
-            android:id="@+id/scrollText"
-            android:layout_width="match_parent"
-            android:layout_height="184dp"
-            android:singleLine="true"
-            app:clickEnable="true"
-            app:isHorizontal="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:speed="1"
-            app:text="@string/input_text_hint"
-            app:text_color="#ffffffff"
-            app:text_size="128sp"
-            app:times="666" />
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:speed="1"
+        app:text="@string/input_text_hint"
+        android:background="@color/black"
+        app:text_color="#ffffffff"
+        app:text_size="128sp"
+        app:times="666" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -46,7 +66,7 @@
         android:layout_margin="@dimen/content_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view">
+        app:layout_constraintTop_toBottomOf="@id/scrollText">
 
 
         <TextView
@@ -102,20 +122,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_speed_tag" />
 
-        <TextView
+        <me.zzy.redot.ui.design.ColorBarView
             android:id="@+id/text_color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:gravity="center"
-            android:text="@string/select"
-            android:textSize="16sp"
+            app:barHeight="21dp"
             app:layout_constraintBottom_toBottomOf="@id/text_color_tag"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_color_tag"
-            app:layout_constraintTop_toTopOf="@id/text_color_tag" />
-
+            app:layout_constraintTop_toTopOf="@id/text_color_tag"
+            app:thumbDrawable="@mipmap/color_icon_button"
+            app:thumbHeight="40dp" />
 
         <TextView
             android:id="@+id/bg_color_tag"
@@ -128,20 +147,19 @@
             app:layout_constraintTop_toBottomOf="@id/text_color_tag" />
 
 
-        <TextView
+        <me.zzy.redot.ui.design.ColorBarView
             android:id="@+id/bg_color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:gravity="center"
-            android:text="@string/select"
-            android:textSize="16sp"
+            app:barHeight="21dp"
             app:layout_constraintBottom_toBottomOf="@id/bg_color_tag"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bg_color_tag"
-            app:layout_constraintTop_toTopOf="@id/bg_color_tag" />
-
+            app:layout_constraintTop_toTopOf="@id/bg_color_tag"
+            app:thumbDrawable="@mipmap/color_icon_button"
+            app:thumbHeight="40dp" />
 
         <EditText
             android:id="@+id/text_input"

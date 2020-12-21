@@ -1,18 +1,22 @@
 package me.zzy.redot.ui.design;
 
 import android.annotation.SuppressLint;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import me.zzy.redot.R;
-import me.zzy.redot.ui.home.MainActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import me.zzy.redot.databinding.ActivityFullscreenBinding;
+
+import static me.zzy.redot.ui.design.TextSettingActivity.SCROLL_SPEED_KEY;
+import static me.zzy.redot.ui.design.TextSettingActivity.TEXT_BG_COLOR_KEY;
+import static me.zzy.redot.ui.design.TextSettingActivity.TEXT_COLOR_KEY;
+import static me.zzy.redot.ui.design.TextSettingActivity.TEXT_INPUT_KEY;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -37,7 +41,6 @@ public class FullscreenActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -47,7 +50,7 @@ public class FullscreenActivity extends AppCompatActivity {
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
-            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+            b.fullscreenContent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -96,31 +99,29 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
+    private ActivityFullscreenBinding b;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        b = ActivityFullscreenBinding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
+        Intent intent = getIntent();
+        if (intent != null) {
+            b.fullscreenContent.setText(intent.getStringExtra(TEXT_INPUT_KEY));
+//            b.fullscreenContent.setTextSize(intent.getFloatExtra(SCROLL_SIZE_KEY, 20f));
+            b.fullscreenContent.setSpeed(intent.getIntExtra(SCROLL_SPEED_KEY, 10));
+            b.fullscreenContent.setTextColor(intent.getIntExtra(TEXT_COLOR_KEY, 0));
+            b.fullscreenContent.setScrollTextBackgroundColor(intent.getIntExtra(TEXT_BG_COLOR_KEY, 0));
 
-        setContentView(R.layout.activity_fullscreen);
+        }
 
         mVisible = true;
-        mContentView = findViewById(R.id.fullscreen_content);
-
-        // Set up the user interaction to manually show or hide the system UI.
-//        mContentView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggle();
-//            }
-//        });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-//        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     /**
      * "Called when activity start-up is complete (after onStart() and onRestoreInstanceState(Bundle) have been called)."
+     *
      * @param savedInstanceState
      */
     @Override
@@ -156,7 +157,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private void show() {
         // Show the system bar
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        b.fullscreenContent.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         mVisible = true;
 
@@ -177,7 +178,6 @@ public class FullscreenActivity extends AppCompatActivity {
     // 第一次按下返回键的事件
     private long firstPressedTime;
 
-    // System.currentTimeMillis() 当前系统的时间
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - firstPressedTime < 2000) {
