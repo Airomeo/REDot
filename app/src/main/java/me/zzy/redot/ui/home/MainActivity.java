@@ -1,36 +1,34 @@
 package me.zzy.redot.ui.home;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import me.zzy.redot.R;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import me.zzy.redot.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private String[] myDataset = {"aaa","bbb","ccc","ddd"};
+    private String[] myDataset = {"aaa", "bbb", "ccc", "ddd"};
+    private ActivityMainBinding b;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        b = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(b.getRoot());
+        setSupportActionBar(b.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.list);
 
         // use this setting to improve performance if you know that changes
