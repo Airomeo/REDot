@@ -16,8 +16,8 @@ public class MyApplication extends Application {
         // 初始化本地缓存对象
         initSharedPreferences();
 
-//        // 初始化本地数据库对象
-//        AppDatabase.getInstance(this);
+        // 初始化本地数据库对象
+        AppDatabase.getInstance(this);
 
     }
 
