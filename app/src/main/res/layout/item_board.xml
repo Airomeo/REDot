@@ -26,18 +26,17 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <me.zzy.redot.ui.design.MScrollTextView
+    <me.zzy.redot.ui.design.ScrollTextView
         android:id="@+id/myScrollTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        app:clickEnable="false"
+        app:clickable="false"
         app:isHorizontal="true"
-        app:speed="4"
+        app:speed="14"
         app:text="@string/dummy_content"
-        app:text_color="#ffffffff"
-        app:text_size="128sp"
-        app:times="567" />
+        app:textColor="@color/white"
+        app:textSize="128sp" />
 
 </androidx.cardview.widget.CardView>
 

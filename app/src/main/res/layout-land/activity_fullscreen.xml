@@ -6,19 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.design.FullscreenActivity">
 
-    <me.zzy.redot.ui.design.MScrollTextView
+    <me.zzy.redot.ui.design.ScrollTextView
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
         android:singleLine="true"
-        app:clickEnable="false"
+        app:clickable="false"
         app:isHorizontal="true"
-        app:speed="4"
         app:text="@string/dummy_content"
-        app:text_color="@color/purple_500"
-        app:text_size="128sp"
-        app:times="567" />
+        app:textColor="@color/purple_500" />
 
 </FrameLayout>
